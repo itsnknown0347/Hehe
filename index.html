@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noob SMP - Leaderboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #000;
+      color: #00f5d4;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px 0;
+      font-size: 2rem;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 800px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #333;
+    }
+    th {
+      background-color: #00f5d4;
+      color: #000;
+    }
+    td {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏆 Noob SMP - Leaderboard</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>K/D</th>
+        <th>Playtime</th>
+      </tr>
+    </thead>
+    <tbody id="player-table">
+      <tr><td colspan="5">🔄 Loading player data...</td></tr>
+    </tbody>
+  </table>
+
+  <div class="error" id="error-message" style="color: #ff4b4b; margin-top: 20px;"></div>
+
+  <script>
+    const players = [
+      { name: "THE_VAMP", kills: 0, deaths: 0, minutesPlayed: 103 },
+      { name: "ITZ_SOYAD", kills: 0, deaths: 0, minutesPlayed: 68 },
+      { name: "Black_Dragon_0", kills: 14, deaths: 1, minutesPlayed: 148 },
+      { name: "itsXunknown0347", kills: 3, deaths: 12, minutesPlayed: 121 },
+      { name: "Hydra364", kills: 1, deaths: 5, minutesPlayed: 96 },
+      { name: "AbhyuEXE", kills: 0, deaths: 0, minutesPlayed: 10 },
+      { name: "UrYansh", kills: 4, deaths: 2, minutesPlayed: 9 },
+      { name: "LunarSniperXD", kills: 0, deaths: 0, minutesPlayed: 0 }
+    ];
+
+    const tbody = document.getElementById("player-table");
+    tbody.innerHTML = "";
+
+    players.sort((a, b) => (b.kills || 0) - (a.kills || 0));
+
+    players.forEach(player => {
+      const name = player.name || "Unknown";
+      const kills = player.kills || 0;
+      const deaths = player.deaths || 0;
+      const kd = deaths === 0 ? kills : (kills / deaths).toFixed(2);
+      const playtime = Math.floor((player.minutesPlayed || 0) / 60) + " hrs";
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${name}</td>
+          <td>${kills}</td>
+          <td>${deaths}</td>
+          <td>${kd}</td>
+          <td>${playtime}</td>
+        </tr>
+      `;
+    });
+  </script>
+</body>
+</html>

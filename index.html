@@ -30,7 +30,7 @@
       top: 0;
       background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
       box-shadow: inset 0 0 40px #222;
-      z-index: 2;
+      z-index: 10;
       transition: transform 1s ease;
     }
 
@@ -40,7 +40,7 @@
     .open-right { transform: translateX(100%); }
 
     .login-box {
-      z-index: 3;
+      z-index: 11;
       background: rgba(0,0,0,0.75);
       border: 2px solid red;
       padding: 30px;
@@ -51,6 +51,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      transition: opacity 0.5s ease;
     }
 
     input {
@@ -124,7 +125,7 @@
     table {
       margin: auto;
       width: 90%;
-      max-width: 800px;
+      max-width: 1000px;
       border-collapse: collapse;
       background-color: rgba(0, 0, 0, 0.7);
       border-radius: 10px;
@@ -181,54 +182,55 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('all', this)">👥 All Players</button>
     <button class="tab-btn" onclick="showTab('top', this)">🥇 Top 3</button>
-    <button class="tab-btn" onclick="showTab('noobs', this)">💀 Noobs</button>
+    <button class="tab-btn" onclick="showTab('ping', this)">📶 Ping Stats</button>
   </div>
 
   <div id="all" class="tab-content active">
     <table>
       <thead>
-        <tr>
-          <th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Playtime</th>
-        </tr>
+        <tr><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Playtime</th></tr>
       </thead>
       <tbody>
-        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td><td>2h 28m</td></tr>
-        <tr><td>itsXunknown0347</td><td>3</td><td>12</td><td>0.25</td><td>2h 1m</td></tr>
+        <tr><td>itsXunknown0347</td><td>3</td><td>19</td><td>0.16</td><td>2h 2m</td></tr>
+        <tr><td>THE_VAMP</td><td>2</td><td>3</td><td>0.67</td><td>4h 2m</td></tr>
+        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td><td>4h 17m</td></tr>
+        <tr><td>ITZ_SOYAD</td><td>3</td><td>2</td><td>1.50</td><td>4h 40m</td></tr>
+        <tr><td>HEMANSH_YT</td><td>2</td><td>2</td><td>1.00</td><td>9m</td></tr>
+        <tr><td>DARK_XD</td><td>1</td><td>1</td><td>1.00</td><td>7m</td></tr>
+        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td><td>15m</td></tr>
         <tr><td>Hydra364</td><td>1</td><td>5</td><td>0.20</td><td>1h 36m</td></tr>
-        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td><td>9m</td></tr>
-        <tr><td>THE_VAMP</td><td>0</td><td>0</td><td>-</td><td>1h 43m</td></tr>
-        <tr><td>ITZ_SOYAD</td><td>0</td><td>0</td><td>-</td><td>1h 8m</td></tr>
-        <tr><td>LunarSniperXD</td><td>0</td><td>0</td><td>-</td><td>0m 40s</td></tr>
+        <tr><td>AbhyuEXE</td><td>0</td><td>0</td><td>-</td><td>10m</td></tr>
+        <tr><td>LunarSniperXD</td><td>0</td><td>0</td><td>-</td><td>40s</td></tr>
       </tbody>
     </table>
   </div>
 
   <div id="top" class="tab-content">
     <table>
-      <thead>
-        <tr>
-          <th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Playtime</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th></tr></thead>
       <tbody>
-        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td><td>2h 28m</td></tr>
-        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td><td>9m</td></tr>
-        <tr><td>itsXunknown0347</td><td>3</td><td>12</td><td>0.25</td><td>2h 1m</td></tr>
+        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td></tr>
+        <tr><td>ITZ_SOYAD</td><td>3</td><td>2</td><td>1.50</td></tr>
+        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td></tr>
       </tbody>
     </table>
   </div>
 
-  <div id="noobs" class="tab-content">
+  <div id="ping" class="tab-content">
     <table>
       <thead>
-        <tr>
-          <th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Playtime</th>
-        </tr>
+        <tr><th>Player</th><th>Avg Ping</th><th>Best</th><th>Worst</th><th>Last Version</th></tr>
       </thead>
       <tbody>
-        <tr><td>LunarSniperXD</td><td>0</td><td>0</td><td>-</td><td>0m 40s</td></tr>
-        <tr><td>ITZ_SOYAD</td><td>0</td><td>0</td><td>-</td><td>1h 8m</td></tr>
-        <tr><td>THE_VAMP</td><td>0</td><td>0</td><td>-</td><td>1h 43m</td></tr>
+        <tr><td>itsXunknown0347</td><td>325ms</td><td>114</td><td>2256</td><td>1.21.4</td></tr>
+        <tr><td>THE_VAMP</td><td>148ms</td><td>25</td><td>3991</td><td>1.21.1</td></tr>
+        <tr><td>Black_Dragon_0</td><td>71ms</td><td>18</td><td>96</td><td>1.21.6</td></tr>
+        <tr><td>ITZ_SOYAD</td><td>159ms</td><td>26</td><td>2986</td><td>1.21.3</td></tr>
+        <tr><td>HEMANSH_YT</td><td>62ms</td><td>29</td><td>91</td><td>1.21.1</td></tr>
+        <tr><td>DARK_XD</td><td>129ms</td><td>66</td><td>142</td><td>1.21.1</td></tr>
+        <tr><td>UrYansh</td><td>293ms</td><td>83</td><td>423</td><td>1.20.1</td></tr>
+        <tr><td>Hydra364</td><td>106ms</td><td>30</td><td>812</td><td>1.21.1</td></tr>
+        <tr><td>AbhyuEXE</td><td>429ms</td><td>194</td><td>520</td><td>1.21.4</td></tr>
       </tbody>
     </table>
   </div>
@@ -256,6 +258,10 @@
     document.getElementById("loginBox").style.opacity = 0;
 
     setTimeout(() => {
+      document.getElementById("leftDoor").style.display = "none";
+      document.getElementById("rightDoor").style.display = "none";
+      document.getElementById("loginBox").style.display = "none";
+
       if (name.toLowerCase() === "gugugaga") {
         document.getElementById("adminPanel").style.display = "block";
       } else {

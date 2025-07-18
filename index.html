@@ -2,281 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Noob SMP Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noob SMP Leaderboard</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-
-    body, html {
-      height: 100%;
-      overflow: hidden;
-      background: black;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0a0a;
+      color: #f1f1f1;
     }
 
-    video#bgvid {
-      position: fixed;
-      top: 0; left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      filter: brightness(0.4);
-    }
-
-    .door {
-      position: absolute;
-      width: 50%;
-      height: 100%;
-      top: 0;
-      background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
-      box-shadow: inset 0 0 40px #222;
-      z-index: 10;
-      transition: transform 1s ease;
-    }
-
-    .left-door { left: 0; border-right: 2px solid red; }
-    .right-door { right: 0; border-left: 2px solid red; }
-    .open-left { transform: translateX(-100%); }
-    .open-right { transform: translateX(100%); }
-
-    .login-box {
-      z-index: 11;
-      background: rgba(0,0,0,0.75);
-      border: 2px solid red;
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-      color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.5s ease;
-    }
-
-    input {
-      padding: 10px;
-      width: 200px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
+    header {
       background: #111;
-      color: white;
-    }
-
-    button {
-      padding: 10px 20px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .container, .admin-panel {
+      padding: 1rem;
       text-align: center;
-      color: #fff;
-      padding-top: 30px;
-      display: none;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      color: #ff5555;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px red;
-    }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .tabs button {
-      padding: 12px 20px;
-      margin: 0 10px;
-      background: #ff0000aa;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
+      font-size: 2rem;
       font-weight: bold;
-    }
-
-    .tabs button:hover { background: #ff3333; }
-    .tabs button.active { background: #ffffff; color: black; }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      animation: fadeTab 0.6s ease-in-out;
-    }
-
-    @keyframes fadeTab {
-      0% { opacity: 0; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1); }
+      border-bottom: 1px solid #333;
     }
 
     table {
-      margin: auto;
-      width: 90%;
-      max-width: 1000px;
+      width: 95%;
+      margin: 2rem auto;
       border-collapse: collapse;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 10px;
+      background-color: #1a1a1a;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     th, td {
-      padding: 12px;
-      border: 1px solid #ff000033;
-      color: white;
-    }
-
-    th { background-color: #ff3333; }
-    tr:nth-child(even) { background-color: #111; }
-
-    .admin-panel {
-      padding: 40px;
-    }
-
-    .admin-panel h2 {
-      font-size: 2rem;
-      color: #ff4444;
-      margin-bottom: 20px;
-    }
-
-    .admin-panel pre {
+      padding: 1rem;
       text-align: left;
-      background: rgba(255,255,255,0.05);
-      padding: 20px;
-      border-radius: 10px;
-      font-size: 14px;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background-color: #222;
+      color: #00ffcc;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    tr:hover {
+      background-color: #2a2a2a;
+    }
+
+    .error {
+      text-align: center;
+      color: #ff5555;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+    }
+
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      padding: 1rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        white-space: pre-wrap;
+      }
+      td:before {
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+        color: #00ffcc;
+      }
+      td:nth-of-type(1):before { content: "#"; }
+      td:nth-of-type(2):before { content: "Username"; }
+      td:nth-of-type(3):before { content: "Playtime"; }
+      td:nth-of-type(4):before { content: "Kills"; }
+      td:nth-of-type(5):before { content: "Deaths"; }
+      td:nth-of-type(6):before { content: "Sessions"; }
     }
   </style>
 </head>
 <body>
+  <header>🏆 Noob SMP Leaderboard</header>
+  <div id="content"></div>
+  <footer>Auto-updating | Powered by Plan & Noob SMP</footer>
 
-<video autoplay muted loop id="bgvid">
-  <source src="background.mp4" type="video/mp4" />
-</video>
+  <script>
+    const apiURL = "http://sgp-free-4.sryzen.cloud:26577/server/Server%201/players";
 
-<!-- Login -->
-<div class="door left-door" id="leftDoor"></div>
-<div class="door right-door" id="rightDoor"></div>
+    fetch(apiURL)
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to fetch data");
+        return response.json();
+      })
+      .then(data => {
+        const players = Object.values(data);
+        players.sort((a, b) => b.playtime - a.playtime); // Sort by playtime
 
-<div class="login-box" id="loginBox">
-  <h2>Welcome to Noob SMP</h2>
-  <input type="text" id="username" placeholder="Enter IGN">
-  <br />
-  <button onclick="openDoors()">Enter</button>
-</div>
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Playtime</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>Sessions</th>
+              </tr>
+            </thead>
+            <tbody>`;
 
-<!-- Leaderboard -->
-<div class="container" id="leaderboard">
-  <h1>🏆 Noob SMP - Leaderboard</h1>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('all', this)">👥 All Players</button>
-    <button class="tab-btn" onclick="showTab('top', this)">🥇 Top 3</button>
-    <button class="tab-btn" onclick="showTab('ping', this)">📶 Ping Stats</button>
-  </div>
+        players.forEach((p, i) => {
+          html += `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${p.name}</td>
+              <td>${(p.playtime / 3600).toFixed(1)}h</td>
+              <td>${p.kills}</td>
+              <td>${p.deaths}</td>
+              <td>${p.sessionCount}</td>
+            </tr>`;
+        });
 
-  <div id="all" class="tab-content active">
-    <table>
-      <thead>
-        <tr><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Playtime</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>itsXunknown0347</td><td>3</td><td>19</td><td>0.16</td><td>2h 2m</td></tr>
-        <tr><td>THE_VAMP</td><td>2</td><td>3</td><td>0.67</td><td>4h 2m</td></tr>
-        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td><td>4h 17m</td></tr>
-        <tr><td>ITZ_SOYAD</td><td>3</td><td>2</td><td>1.50</td><td>4h 40m</td></tr>
-        <tr><td>HEMANSH_YT</td><td>2</td><td>2</td><td>1.00</td><td>9m</td></tr>
-        <tr><td>DARK_XD</td><td>1</td><td>1</td><td>1.00</td><td>7m</td></tr>
-        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td><td>15m</td></tr>
-        <tr><td>Hydra364</td><td>1</td><td>5</td><td>0.20</td><td>1h 36m</td></tr>
-        <tr><td>AbhyuEXE</td><td>0</td><td>0</td><td>-</td><td>10m</td></tr>
-        <tr><td>LunarSniperXD</td><td>0</td><td>0</td><td>-</td><td>40s</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div id="top" class="tab-content">
-    <table>
-      <thead><tr><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th></tr></thead>
-      <tbody>
-        <tr><td>Black_Dragon_0</td><td>14</td><td>1</td><td>14.00</td></tr>
-        <tr><td>ITZ_SOYAD</td><td>3</td><td>2</td><td>1.50</td></tr>
-        <tr><td>UrYansh</td><td>4</td><td>2</td><td>2.00</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div id="ping" class="tab-content">
-    <table>
-      <thead>
-        <tr><th>Player</th><th>Avg Ping</th><th>Best</th><th>Worst</th><th>Last Version</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>itsXunknown0347</td><td>325ms</td><td>114</td><td>2256</td><td>1.21.4</td></tr>
-        <tr><td>THE_VAMP</td><td>148ms</td><td>25</td><td>3991</td><td>1.21.1</td></tr>
-        <tr><td>Black_Dragon_0</td><td>71ms</td><td>18</td><td>96</td><td>1.21.6</td></tr>
-        <tr><td>ITZ_SOYAD</td><td>159ms</td><td>26</td><td>2986</td><td>1.21.3</td></tr>
-        <tr><td>HEMANSH_YT</td><td>62ms</td><td>29</td><td>91</td><td>1.21.1</td></tr>
-        <tr><td>DARK_XD</td><td>129ms</td><td>66</td><td>142</td><td>1.21.1</td></tr>
-        <tr><td>UrYansh</td><td>293ms</td><td>83</td><td>423</td><td>1.20.1</td></tr>
-        <tr><td>Hydra364</td><td>106ms</td><td>30</td><td>812</td><td>1.21.1</td></tr>
-        <tr><td>AbhyuEXE</td><td>429ms</td><td>194</td><td>520</td><td>1.21.4</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Admin Panel -->
-<div class="admin-panel" id="adminPanel">
-  <h2>Welcome Admin</h2>
-  <pre>
-[12:00] Player Hydra364 joined
-[12:02] Black_Dragon_0 achieved 10 kills!
-[12:10] UrYansh left the server
-[12:14] Possible lag spike detected (Ping: 1200ms)
-[12:15] Admin panel accessed by Gugugaga
-  </pre>
-</div>
-
-<script>
-  function openDoors() {
-    const name = document.getElementById("username").value.trim();
-    if (!name) return alert("Please enter your name.");
-
-    document.getElementById("leftDoor").classList.add("open-left");
-    document.getElementById("rightDoor").classList.add("open-right");
-    document.getElementById("loginBox").style.opacity = 0;
-
-    setTimeout(() => {
-      document.getElementById("leftDoor").style.display = "none";
-      document.getElementById("rightDoor").style.display = "none";
-      document.getElementById("loginBox").style.display = "none";
-
-      if (name.toLowerCase() === "gugugaga") {
-        document.getElementById("adminPanel").style.display = "block";
-      } else {
-        document.getElementById("leaderboard").style.display = "block";
-      }
-    }, 1000);
-  }
-
-  function showTab(tabId, btn) {
-    document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById(tabId).classList.add("active");
-    btn.classList.add("active");
-  }
-</script>
-
+        html += `</tbody></table>`;
+        document.getElementById("content").innerHTML = html;
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("content").innerHTML = `
+          <p class="error">⚠️ Failed to load player data. Check if the server is online or CORS is correctly set.</p>`;
+      });
+  </script>
 </body>
 </html>

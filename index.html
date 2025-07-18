@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Leaderboard</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: monospace;
+      text-align: center;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 10px;
+    }
+    th {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Noob SMP Leaderboard</h1>
+  <table id="leaderboard">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>KDR</th>
+        <th>Playtime</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    fetch("stats.json")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector("tbody");
+        Object.entries(data).forEach(([player, stats]) => {
+          const kdr = stats.deaths === 0 ? stats.kills : (stats.kills / stats.deaths).toFixed(2);
+          const hrs = Math.floor(stats.playtime / 60);
+          const mins = stats.playtime % 60;
+          const row = `
+            <tr>
+              <td>${player}</td>
+              <td>${stats.kills}</td>
+              <td>${stats.deaths}</td>
+              <td>${kdr}</td>
+              <td>${hrs > 0 ? hrs + " hr " : ""}${mins} min</td>
+            </tr>`;
+          tbody.innerHTML += row;
+        });
+      }).catch(err => {
+        document.body.innerHTML += "<p style='color:red;'>Failed to load stats.json</p>";
+      });
+  </script>
+</body>
+</html>

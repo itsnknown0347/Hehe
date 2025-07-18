@@ -1,75 +1,79 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Noob SMP Stats</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noob SMP Leaderboard</title>
   <style>
     body {
-      background-color: #111;
-      color: #eee;
-      font-family: sans-serif;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      padding: 2em;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    #leaderboard {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     table {
-      margin: 2em auto;
       border-collapse: collapse;
       width: 90%;
-      max-width: 600px;
-      background: #222;
+      max-width: 1000px;
     }
     th, td {
-      padding: 10px;
-      border: 1px solid #555;
+      padding: 1rem;
+      border: 1px solid #444;
     }
     th {
-      background: #333;
+      background-color: #111;
+    }
+    .error {
+      color: red;
+      margin-top: 2rem;
+    }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
   <h1>Noob SMP Leaderboard</h1>
-  <p>Loading player data...</p>
-  <table id="leaderboard" style="display:none">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Playtime</th>
-        <th>Sessions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="leaderboard">
+    <p>Loading player data...</p>
+  </div>  <footer>
+    Auto-updating | Powered by Plan & Sryzen | Made by @itsnknown0347
+  </footer>  <script>
+    const leaderboard = document.getElementById("leaderboard");
+    const apiUrl = "http://sgp-free-4.sryzen.cloud:26577/server/Server%201/players";
 
-  <script>
-    const API_URL = 'http://sgp-free-4.sryzen.cloud:26577/server/Server%201/players';
-
-    fetch(API_URL)
+    fetch(apiUrl)
       .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error("Failed to fetch");
         return response.json();
       })
       .then(data => {
-        const players = data.players;
-        const table = document.getElementById('leaderboard');
-        const tbody = table.querySelector('tbody');
-        document.querySelector('p').style.display = 'none';
-        table.style.display = '';
+        const players = data.players.sort((a, b) => b.kills - a.kills);
+
+        let html = `<table><thead><tr><th>Player</th><th>Kills</th><th>Deaths</th><th>KDR</th></tr></thead><tbody>`;
 
         players.forEach(player => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${player.name}</td>
-            <td>${player.playtime}</td>
-            <td>${player.sessionCount}</td>
-          `;
-          tbody.appendChild(row);
+          const kdr = (player.kills / (player.deaths || 1)).toFixed(2);
+          html += `<tr><td>${player.name}</td><td>${player.kills}</td><td>${player.deaths}</td><td>${kdr}</td></tr>`;
         });
+
+        html += `</tbody></table>`;
+        leaderboard.innerHTML = html;
       })
       .catch(error => {
-        document.querySelector('p').textContent = 'Failed to load data. ' + error;
-        console.error('Fetch error:', error);
+        leaderboard.innerHTML = `<p class="error">Failed to load data. ${error}</p>`;
       });
-  </script>
-</body>
+  </script></body>
 </html>

@@ -1,147 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Noob SMP Leaderboard</title>
+  <meta charset="UTF-8">
+  <title>Noob SMP Stats</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0a0a;
-      color: #f1f1f1;
-    }
-
-    header {
-      background: #111;
-      padding: 1rem;
+      background-color: #111;
+      color: #eee;
+      font-family: sans-serif;
       text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      border-bottom: 1px solid #333;
+      padding: 2em;
     }
-
     table {
-      width: 95%;
-      margin: 2rem auto;
+      margin: 2em auto;
       border-collapse: collapse;
-      background-color: #1a1a1a;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 90%;
+      max-width: 600px;
+      background: #222;
     }
-
     th, td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #333;
+      padding: 10px;
+      border: 1px solid #555;
     }
-
     th {
-      background-color: #222;
-      color: #00ffcc;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-    }
-
-    tr:hover {
-      background-color: #2a2a2a;
-    }
-
-    .error {
-      text-align: center;
-      color: #ff5555;
-      margin-top: 2rem;
-      font-size: 1.2rem;
-    }
-
-    footer {
-      text-align: center;
-      color: #888;
-      font-size: 0.9rem;
-      padding: 1rem;
-    }
-
-    @media screen and (max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      th {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-      td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-        white-space: pre-wrap;
-      }
-      td:before {
-        position: absolute;
-        left: 1rem;
-        font-weight: bold;
-        color: #00ffcc;
-      }
-      td:nth-of-type(1):before { content: "#"; }
-      td:nth-of-type(2):before { content: "Username"; }
-      td:nth-of-type(3):before { content: "Playtime"; }
-      td:nth-of-type(4):before { content: "Kills"; }
-      td:nth-of-type(5):before { content: "Deaths"; }
-      td:nth-of-type(6):before { content: "Sessions"; }
+      background: #333;
     }
   </style>
 </head>
 <body>
-  <header>🏆 Noob SMP Leaderboard</header>
-  <div id="content"></div>
-  <footer>Auto-updating | Powered by Plan & Noob SMP</footer>
+  <h1>Noob SMP Leaderboard</h1>
+  <p>Loading player data...</p>
+  <table id="leaderboard" style="display:none">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Playtime</th>
+        <th>Sessions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
   <script>
-    const apiURL = "http://sgp-free-4.sryzen.cloud:26577/server/Server%201/players";
+    const API_URL = 'http://sgp-free-4.sryzen.cloud:26577/server/Server%201/players';
 
-    fetch(apiURL)
+    fetch(API_URL)
       .then(response => {
-        if (!response.ok) throw new Error("Failed to fetch data");
+        if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
       })
       .then(data => {
-        const players = Object.values(data);
-        players.sort((a, b) => b.playtime - a.playtime); // Sort by playtime
+        const players = data.players;
+        const table = document.getElementById('leaderboard');
+        const tbody = table.querySelector('tbody');
+        document.querySelector('p').style.display = 'none';
+        table.style.display = '';
 
-        let html = `
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Username</th>
-                <th>Playtime</th>
-                <th>Kills</th>
-                <th>Deaths</th>
-                <th>Sessions</th>
-              </tr>
-            </thead>
-            <tbody>`;
-
-        players.forEach((p, i) => {
-          html += `
-            <tr>
-              <td>${i + 1}</td>
-              <td>${p.name}</td>
-              <td>${(p.playtime / 3600).toFixed(1)}h</td>
-              <td>${p.kills}</td>
-              <td>${p.deaths}</td>
-              <td>${p.sessionCount}</td>
-            </tr>`;
+        players.forEach(player => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${player.playtime}</td>
+            <td>${player.sessionCount}</td>
+          `;
+          tbody.appendChild(row);
         });
-
-        html += `</tbody></table>`;
-        document.getElementById("content").innerHTML = html;
       })
-      .catch(err => {
-        console.error(err);
-        document.getElementById("content").innerHTML = `
-          <p class="error">⚠️ Failed to load player data. Check if the server is online or CORS is correctly set.</p>`;
+      .catch(error => {
+        document.querySelector('p').textContent = 'Failed to load data. ' + error;
+        console.error('Fetch error:', error);
       });
   </script>
 </body>

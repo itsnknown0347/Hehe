@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Player Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Noob SMP Player Stats</h1>
+    <input type="text" id="playerName" placeholder="Enter Minecraft Name" />
+    <button onclick="getPlayerStats()">Get Stats</button>
+    <div id="stats" class="hidden">
+      <h2>Stats for <span id="name"></span></h2>
+      <p>Kills: <span id="kills"></span></p>
+      <p>Deaths: <span id="deaths"></span></p>
+      <p>KDR: <span id="kdr"></span></p>
+      <p>Playtime: <span id="playtime"></span></p>
+    </div>
+    <div id="error" class="error"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

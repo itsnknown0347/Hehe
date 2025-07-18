@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noob SMP Leaderboard</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #111;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+      text-align: center;
+    }
+    th {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Noob SMP Leaderboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>KDR</th>
+        <th>Playtime</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboard">
+      <tr><td colspan="5">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const API_URL = "https://e9555603-ada6-4833-b2a0-a6f074d25219-00-1k7atbe3ov1p6.pike.replit.dev/players";
+    const tableBody = document.getElementById("leaderboard");
+
+    function formatPlaytime(minutes) {
+      const hrs = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hrs > 0 ? hrs + " hr " : ""}${mins} min`;
+    }
+
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((players) => {
+        if (!Array.isArray(players) || players.length === 0) {
+          tableBody.innerHTML = "<tr><td colspan='5'>No data available</td></tr>";
+          return;
+        }
+
+        tableBody.innerHTML = "";
+        players.forEach((player) => {
+          const kdr = player.deaths > 0 ? (player.kills / player.deaths).toFixed(2) : player.kills;
+          const row = `
+            <tr>
+              <td>${player.name}</td>
+              <td>${player.kills}</td>
+              <td>${player.deaths}</td>
+              <td>${kdr}</td>
+              <td>${formatPlaytime(Math.floor(player.playtime / 60))}</td>
+            </tr>
+          `;
+          tableBody.innerHTML += row;
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        tableBody.innerHTML = "<tr><td colspan='5'>Failed to load data</td></tr>";
+      });
+  </script>
+</body>
+</html>

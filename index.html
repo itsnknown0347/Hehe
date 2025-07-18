@@ -2,31 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Noob SMP Leaderboard</title>
   <style>
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 2rem;
+      background-color: #111;
+      color: #f5f5f5;
+      font-family: "Segoe UI", sans-serif;
+      padding: 20px;
+      text-align: center;
     }
     h1 {
-      text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 30px;
+      color: #00ff99;
     }
     table {
-      width: 100%;
+      margin: 0 auto;
       border-collapse: collapse;
-      background-color: #111;
+      width: 90%;
+      max-width: 800px;
     }
     th, td {
-      padding: 12px;
       border: 1px solid #444;
-      text-align: center;
+      padding: 12px;
     }
     th {
       background-color: #222;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+    .error {
+      color: red;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -47,43 +55,51 @@
     </tbody>
   </table>
 
+  <p class="error" id="error"></p>
+
   <script>
-    const API_URL = "https://e9555603-ada6-4833-b2a0-a6f074d25219-00-1k7atbe3ov1p6.pike.replit.dev/players";
-    const tableBody = document.getElementById("leaderboard");
+    async function fetchLeaderboard() {
+      const url = "https://e9555603-ada6-4833-b2a0-a6f074d25219-00-1k7atbe3ov1p6.pike.replit.dev/players";
+      const tableBody = document.getElementById("leaderboard");
+      const errorBox = document.getElementById("error");
 
-    function formatPlaytime(minutes) {
-      const hrs = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      return `${hrs > 0 ? hrs + " hr " : ""}${mins} min`;
-    }
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
 
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((players) => {
-        if (!Array.isArray(players) || players.length === 0) {
-          tableBody.innerHTML = "<tr><td colspan='5'>No data available</td></tr>";
-          return;
-        }
+        tableBody.innerHTML = ""; // clear
 
-        tableBody.innerHTML = "";
-        players.forEach((player) => {
-          const kdr = player.deaths > 0 ? (player.kills / player.deaths).toFixed(2) : player.kills;
-          const row = `
-            <tr>
-              <td>${player.name}</td>
-              <td>${player.kills}</td>
-              <td>${player.deaths}</td>
-              <td>${kdr}</td>
-              <td>${formatPlaytime(Math.floor(player.playtime / 60))}</td>
-            </tr>
-          `;
+        if (!Array.isArray(data)) throw new Error("Invalid data");
+
+        data.forEach(player => {
+          const kdr = (player.kills / (player.deaths || 1)).toFixed(2);
+          const playtime = formatPlaytime(player.playtimeTicks || 0);
+
+          const row = `<tr>
+            <td>${player.name}</td>
+            <td>${player.kills}</td>
+            <td>${player.deaths}</td>
+            <td>${kdr}</td>
+            <td>${playtime}</td>
+          </tr>`;
           tableBody.innerHTML += row;
         });
-      })
-      .catch((err) => {
-        console.error(err);
+        errorBox.textContent = "";
+      } catch (err) {
         tableBody.innerHTML = "<tr><td colspan='5'>Failed to load data</td></tr>";
-      });
+        errorBox.textContent = "Error: " + err.message;
+      }
+    }
+
+    function formatPlaytime(ticks) {
+      const totalMinutes = Math.floor(ticks / (20 * 60));
+      const hrs = Math.floor(totalMinutes / 60);
+      const mins = totalMinutes % 60;
+      return hrs > 0 ? `${hrs} hr ${mins} min` : `${mins} min`;
+    }
+
+    fetchLeaderboard();
+    setInterval(fetchLeaderboard, 60000); // auto refresh every 60 sec
   </script>
 </body>
 </html>
